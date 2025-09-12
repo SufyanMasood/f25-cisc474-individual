@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, CSSProperties } from "react";
+import { ReactNode, CSSProperties, MouseEvent } from "react";
 
 interface ButtonProps {
   children: ReactNode;
@@ -8,16 +8,20 @@ interface ButtonProps {
   appName: string;
   type?: "button" | "submit" | "reset";
   style?: CSSProperties;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+  onMouseOver?: (event: MouseEvent<HTMLButtonElement>) => void;
+  onMouseOut?: (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const Button = ({ children, className, appName, type = "button", style, onClick }: ButtonProps) => {
-  return (
+export const Button = ({ children, className, type = "button", style, onClick, onMouseOver, onMouseOut }: ButtonProps) => {
+  return  (
     <button
       className={className}
       type={type}
       style={style}
       onClick={onClick}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
     >
       {children}
     </button>
