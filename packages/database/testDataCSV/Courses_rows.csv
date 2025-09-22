@@ -1,0 +1,4 @@
+courseId,courseName,courseCode,description,instructorId
+course001,Data Structures and Algorithms,CISC320,Introduction to fundamental data structures and algorithms.,instructor001
+course002,Advanced Web Development,CISC474,Comprehensive web development course.,instructor002
+course003,Senior Capstone Project,CISC498,Real world experience working on a team-based software project.,instructor001

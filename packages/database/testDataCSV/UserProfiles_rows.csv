@@ -1,0 +1,6 @@
+userProfileId,userId,avatarUrl,biography
+profile001,admin001,,System administrator managing the LMS platform.
+profile002,instructor001,https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150,Computer Science professor specializing in algorithms.
+profile003,instructor002,,Mathematics professor who hasn't uploaded a photo yet.
+profile004,student001,,CS major interested in collaborative learning approaches.
+profile005,student002,,

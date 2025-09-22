@@ -1,0 +1,3 @@
+gradeId,submissionId,graderId,pointsEarned,totalPoints,feedback,gradedOn
+grade001,submission001,instructor001,85,100,Strong BST implementation with good use of object-oriented principles. Insert and search methods work correctly. Delete method handles most cases but needs refinement for nodes with two children. Code is clean and well-structured.,2024-10-16 10:30:00
+grade002,submission002,instructor001,45,50,Excellent algorithm analysis and problem decomposition. Your choice of merge sort is well-justified with clear reasoning about complexity trade-offs. Good foundation for the collaborative coding sequence.,2024-10-21 09:15:00

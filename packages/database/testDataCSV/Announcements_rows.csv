@@ -1,0 +1,3 @@
+announcementId,courseId,subject,message,publishedAt,updatedAt
+announcement001,course001,Welcome to CISC320!,Welcome to Data Structures and Algorithms! Please review the course syllabus and set up your development environment. Our first programming assignment has been posted.,2024-08-28 08:00:00,2024-08-28 08:00:00
+announcement002,course001,New CollabCode Assignment Posted,"I've posted our innovative CollabCode assignment! This collaborative coding challenge will test your ability to work in sequence with your classmates. Each step builds on the previous, so communication and clear code documentation are essential.",2024-09-20 10:30:00,2024-09-20 10:30:00
