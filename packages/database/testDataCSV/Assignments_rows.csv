@@ -1,0 +1,4 @@
+assignmentId,title,description,assignmentType,maxPoints,dueDateTime,publishDateTime,courseId
+assignment001,Binary Search Tree Implementation,"Implement a complete binary search tree with insert, delete, and search operations using JavaScript or Python.",Project,100,2024-10-15 23:59:00,2024-09-15 08:00:00,course001
+assignment002,Collaborative Algorithm Implementation,Multi-step coding challenge where each student builds upon the previous student's work to create a complete sorting algorithm solution.,CollabCode,150,2024-11-01 23:59:00,2024-09-20 08:00:00,course001
+assignment003,React Component Development,Build a responsive React component with proper state management and API integration.,Homework,75,2024-10-10 23:59:00,2024-09-25 08:00:00,course002

@@ -12,9 +12,85 @@ generator client {
   output   = "../generated/client"
 }
 
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
+model Users {
+  userId        String     @id @default(cuid())
+  firstName     String
+  lastName      String
+  email         String     @unique
   emailVerified DateTime?
+  userRole      UserRole   @default(STUDENT)
+}
+
+model UserProfiles {
+  userProfileId String   @id @default(cuid())
+  userId        String   @unique
+  avatarUrl     String?
+  biography     String?
+}
+
+model Courses {
+  courseId     String   @id @default(cuid())
+  courseName   String
+  courseCode   String   @unique
+  description  String?
+  instructorId String
+}
+
+model Enrollments {
+  enrollmentId String    @id @default(cuid())
+  studentId    String
+  courseId     String
+  enrolledDate DateTime  @default(now())
+
+  @@unique([studentId, courseId])
+  @@index([studentId])
+}
+
+model Assignments {
+  assignmentId    String    @id @default(cuid())
+  title           String
+  description     String?
+  assignmentType  String
+  maxPoints       Int       @default(100)
+  dueDateTime     DateTime
+  publishDateTime DateTime
+  courseId        String
+
+  @@index([courseId])
+}
+
+model Submissions {
+  submissionId   String   @id @default(cuid())
+  assignmentId   String
+  studentId      String
+  submissionText String
+  submittedAt    DateTime  @default(now())
+  lastModified   DateTime  @updatedAt
+  isGroupWork    Boolean   @default(false)
+  collaborators  String?   // student IDs in a comma-separated string for unique submission type assignments
+}
+
+model Grades {
+  gradeId      String    @id @default(cuid())
+  submissionId String    @unique
+  graderId     String
+  pointsEarned Int
+  totalPoints  Int
+  feedback     String?
+  gradedOn     DateTime  @default(now())
+}
+
+model Announcements {
+  announcementId String    @id @default(cuid())
+  courseId       String
+  subject        String
+  message        String
+  publishedAt    DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+enum UserRole {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
 }
