@@ -7,9 +7,15 @@ import { AppController } from './app.controller';
 
 import { UsersModule } from './users/users.module';
 import { UserProfilesModule } from './userprofiles/userprofiles.module';
+import { AnnouncementsModule } from './announcements/announcements.module';
+import { AssignmentsModule } from './assignments/assignments.module';
+import { CoursesModule } from './courses/courses.module';
+import { EnrollmentsModule } from './enrollments/enrollments.module';
+import { GradesModule } from './grades/grades.module';
+import { SubmissionsModule } from './submissions/submissions.module';
 
 @Module({
-  imports: [LinksModule, UsersModule, UserProfilesModule],
+  imports: [LinksModule, UsersModule, UserProfilesModule, AnnouncementsModule, AssignmentsModule, CoursesModule, EnrollmentsModule, GradesModule, SubmissionsModule],
   controllers: [AppController],
   providers: [AppService],
 })
