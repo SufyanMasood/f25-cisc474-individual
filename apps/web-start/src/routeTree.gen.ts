@@ -10,33 +10,90 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as StudentDashboardIndexRouteImport } from './routes/student/dashboard/index'
+import { Route as InstructorAssignmentsIndexRouteImport } from './routes/instructor/assignments/index'
+import { Route as AdminCoursesIndexRouteImport } from './routes/admin/courses/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginIndexRoute = LoginIndexRouteImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudentDashboardIndexRoute = StudentDashboardIndexRouteImport.update({
+  id: '/student/dashboard/',
+  path: '/student/dashboard/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InstructorAssignmentsIndexRoute =
+  InstructorAssignmentsIndexRouteImport.update({
+    id: '/instructor/assignments/',
+    path: '/instructor/assignments/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AdminCoursesIndexRoute = AdminCoursesIndexRouteImport.update({
+  id: '/admin/courses/',
+  path: '/admin/courses/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginIndexRoute
+  '/admin/courses': typeof AdminCoursesIndexRoute
+  '/instructor/assignments': typeof InstructorAssignmentsIndexRoute
+  '/student/dashboard': typeof StudentDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginIndexRoute
+  '/admin/courses': typeof AdminCoursesIndexRoute
+  '/instructor/assignments': typeof InstructorAssignmentsIndexRoute
+  '/student/dashboard': typeof StudentDashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login/': typeof LoginIndexRoute
+  '/admin/courses/': typeof AdminCoursesIndexRoute
+  '/instructor/assignments/': typeof InstructorAssignmentsIndexRoute
+  '/student/dashboard/': typeof StudentDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/admin/courses'
+    | '/instructor/assignments'
+    | '/student/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/login'
+    | '/admin/courses'
+    | '/instructor/assignments'
+    | '/student/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/login/'
+    | '/admin/courses/'
+    | '/instructor/assignments/'
+    | '/student/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginIndexRoute: typeof LoginIndexRoute
+  AdminCoursesIndexRoute: typeof AdminCoursesIndexRoute
+  InstructorAssignmentsIndexRoute: typeof InstructorAssignmentsIndexRoute
+  StudentDashboardIndexRoute: typeof StudentDashboardIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +105,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/student/dashboard/': {
+      id: '/student/dashboard/'
+      path: '/student/dashboard'
+      fullPath: '/student/dashboard'
+      preLoaderRoute: typeof StudentDashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/instructor/assignments/': {
+      id: '/instructor/assignments/'
+      path: '/instructor/assignments'
+      fullPath: '/instructor/assignments'
+      preLoaderRoute: typeof InstructorAssignmentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/courses/': {
+      id: '/admin/courses/'
+      path: '/admin/courses'
+      fullPath: '/admin/courses'
+      preLoaderRoute: typeof AdminCoursesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginIndexRoute: LoginIndexRoute,
+  AdminCoursesIndexRoute: AdminCoursesIndexRoute,
+  InstructorAssignmentsIndexRoute: InstructorAssignmentsIndexRoute,
+  StudentDashboardIndexRoute: StudentDashboardIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

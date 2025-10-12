@@ -1,8 +1,11 @@
-"use client";
+import { createFileRoute } from '@tanstack/react-router'
 
-import React from "react";
-import Navbar from "../../../../web-start/src/components/Navbar";
-import PageHeader from "../../../../web-start/src/components/PageHeader";
+import Navbar from '../../../components/Navbar';
+import PageHeader from '../../../components/PageHeader';
+
+export const Route = createFileRoute('/admin/courses/')({
+  component: AdminCourses
+})
 
 interface Course {
     id: string;
@@ -12,7 +15,7 @@ interface Course {
     meetingTimes: string;
 }
 
-export default function AdminCourses() {
+function AdminCourses() {
     
     const courses: Course[] = [
         { id: "1", courseId: "CISC474", name: "Web Application Development", instructor: "Dr. Bart", meetingTimes: "MWF 12:40-1:35"}
@@ -25,11 +28,9 @@ export default function AdminCourses() {
             fontFamily: "var(--font-geist-sans)"
         }}>
             <div style={{ display: "flex", minHeight: "100vh" }}>
-                {/* Get Navbar component */}
                 <Navbar userType="admin" activeItem="courses" />
 
                 <div style={{ flex: 1, padding: "2rem" }}>
-                    {/* Get PageHeader component */}
                     <PageHeader title="Courses" userType="admin" />
 
                    {/* Create Course button */}

@@ -1,8 +1,11 @@
-"use client";
+import { createFileRoute } from '@tanstack/react-router'
 
-import React from "react";
-import Navbar from "../../../../web-start/src/components/Navbar";
-import PageHeader from "../../../../web-start/src/components/PageHeader";
+import Navbar from '../../../components/Navbar';
+import PageHeader from '../../../components/PageHeader';
+
+export const Route = createFileRoute('/instructor/assignments/')({
+  component: InstructorAssignments
+})
 
 interface Assignment {
     id: string;
@@ -13,7 +16,7 @@ interface Assignment {
     dueTime: string;
 }
 
-export default function InstructorAssignments() {
+function InstructorAssignments() {
     
     const assignments: Assignment[] = [
         { id: "1", courseId: "CISC474", courseName: "Web Application Development", assignmentName: "Learning NextJS", dueDate: "2025-09-12", dueTime: "11:59 PM"}
@@ -43,11 +46,9 @@ export default function InstructorAssignments() {
             fontFamily: "var(--font-geist-sans)"
         }}>
             <div style={{ display: "flex", minHeight: "100vh" }}>
-                {/* Get Navbar component */}
                 <Navbar userType="instructor" activeItem="assignments" />
 
                 <div style={{ flex: 1, padding: "2rem" }}>
-                    {/* Get PageHeader component*/}
                     <PageHeader title="Assignments" userType="instructor" />
 
                      {/* Create Assignment Button */}
