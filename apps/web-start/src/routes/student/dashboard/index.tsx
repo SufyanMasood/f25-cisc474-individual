@@ -1,9 +1,10 @@
-"use client";
+import { createFileRoute } from '@tanstack/react-router'
+import Navbar from '../../../components/Navbar';
+import PageHeader from '../../../components/PageHeader';
 
-import React from "react";
-import { Button } from "@repo/ui/button";
-import Navbar from "../../../../web-start/src/components/Navbar";
-import PageHeader from "../../../../web-start/src/components/PageHeader";
+export const Route = createFileRoute('/student/dashboard/')({
+  component: StudentDashboard
+})
 
 interface Course {
     id: string;
@@ -22,7 +23,7 @@ interface Notification {
     type: "info" | "warning" | "success";
 }
 
-export default function StudentDashboard() {
+function StudentDashboard() {
     const courses: Course[] = [
         { id: "1", courseId: "CISC474", name: "Web Application Development", instructor: "Dr. Bart", credits: 3, grade: "A", numericalGrade: 94.2 }
     ];
@@ -38,11 +39,9 @@ export default function StudentDashboard() {
             fontFamily: "var(--font-geist-sans)"
         }}>
             <div style={{ display: "flex", minHeight: "100vh" }}>
-                {/* Get Navbar component */}
                 <Navbar userType="student" activeItem="dashboard" />
 
                 <div style={{ flex: 1, padding: "2rem" }}>
-                    {/* Get PageHeader component */}
                     <PageHeader title="Dashboard" userType="student" />
 
                     <div style={{
@@ -300,8 +299,7 @@ export default function StudentDashboard() {
                                         Senior
                                     </p>
                                 </div>
-                                <Button
-                                    appName="web"
+                                <button
                                     style={{
                                         backgroundColor: "#667eea",
                                         color: "white",
@@ -315,7 +313,7 @@ export default function StudentDashboard() {
                                     }}
                                 >
                                     Edit Profile
-                                </Button>
+                                </button>
                             </div>
                         </div>
 

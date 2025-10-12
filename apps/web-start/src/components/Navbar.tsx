@@ -1,8 +1,4 @@
-"use client";
-
-import React from "react";
-import Link from "next/link";
-import { Button } from "@repo/ui/button";
+import { Link } from '@tanstack/react-router';
 
 interface NavItem {
     label: string;
@@ -74,12 +70,12 @@ export default function Navbar({ userType, activeItem = "dashboard" }: NavbarPro
                 </h2>
             </div>
 
-            {/* Navigation. Links will be added*/}
+            {/* Navigation */}
             <nav style={{ marginBottom: "2rem" }}>
                 {navItems.map((item) => (
                     <div key={item.label}>
                         {item.href ? (
-                            <Link href={item.href} style={{ textDecoration: "none" }}>
+                            <Link to={item.href} style={{ textDecoration: "none" }}>
                                 <div style={{
                                     backgroundColor: item.active ? "#667eea" : "transparent",
                                     color: item.active ? "white" : "#6b7280",
@@ -136,9 +132,8 @@ export default function Navbar({ userType, activeItem = "dashboard" }: NavbarPro
             </nav>
 
             {/* Logout */}
-            <Link href="/" style={{ textDecoration: "none" }}>
-                <Button
-                    appName="web"
+            <Link to="/" style={{ textDecoration: "none" }}>
+                <button
                     style={{
                         width: "100%",
                         backgroundColor: "transparent",
@@ -161,7 +156,7 @@ export default function Navbar({ userType, activeItem = "dashboard" }: NavbarPro
                     }}
                 >
                     Logout
-                </Button>
+                </button>
             </Link>
         </div>
     );
