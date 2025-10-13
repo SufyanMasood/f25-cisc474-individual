@@ -1,37 +1,123 @@
 import { createFileRoute } from '@tanstack/react-router'
-import Navbar from '../../../components/Navbar';
-import PageHeader from '../../../components/PageHeader';
+import Navbar from '../../../components/Navbar'
+import PageHeader from '../../../components/PageHeader'
+import { useQuery } from '@tanstack/react-query'
+import { Suspense } from 'react'
+import { backendFetcher } from '../../../integrations/fetcher'
 
 export const Route = createFileRoute('/student/dashboard/')({
   component: StudentDashboard
 })
 
 interface Course {
-    id: string;
     courseId: string;
-    name: string;
-    instructor: string;
-    credits: number;
-    grade?: string;
-    numericalGrade?: number;
+    courseName: string;
+    courseCode: string;
+    description: string;
+    instructorId: string;
 }
 
-interface Notification {
-    id: string;
-    message: string;
-    date: string;
-    type: "info" | "warning" | "success";
+function CoursesContent() {
+    const { data: courses = [], isLoading, error } = useQuery({
+        queryKey: ['courses'],
+        queryFn: backendFetcher<Course[]>('/courses')
+    });
+
+    if (isLoading) {
+        return (
+            <div style={{
+                padding: "2rem",
+                textAlign: "center",
+                color: "#6b7280"
+            }}>
+                Loading courses...
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div style={{
+                padding: "2rem",
+                textAlign: "center",
+                color: "#dc2626"
+            }}>
+                Error loading courses: {(error as Error).message}
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            {courses.map((course: Course) => (
+                <div key={course.courseId} style={{
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    padding: "0.75rem",
+                    marginBottom: "0.75rem",
+                    transition: "background-color 0.2s",
+                    cursor: "pointer"
+                }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f9fafb"}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = "transparent"}
+                >
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "start"
+                    }}>
+                        <div>
+                            <h3 style={{
+                                fontSize: "0.875rem",
+                                fontWeight: "500",
+                                color: "#1f2937",
+                                margin: 0,
+                                marginBottom: "0.25rem"
+                            }}>
+                                {course.courseName}
+                            </h3>
+                            <p style={{
+                                fontSize: "0.75rem",
+                                color: "#6b7280",
+                                margin: 0,
+                                marginBottom: "0.25rem"
+                            }}>
+                                Course Code: {course.courseCode}
+                            </p>
+                            <p style={{
+                                fontSize: "0.75rem",
+                                color: "#6b7280",
+                                margin: 0,
+                                marginBottom: "0.25rem"
+                            }}>
+                                Instructor: {course.instructorId}
+                            </p>
+                            <p style={{
+                                fontSize: "0.75rem",
+                                color: "#6b7280",
+                                margin: 0
+                            }}>
+                                {course.description}
+                            </p>
+                        </div>
+                        <span style={{
+                            backgroundColor: "#dcfce7",
+                            color: "#166534",
+                            padding: "0.25rem 0.5rem",
+                            borderRadius: "12px",
+                            fontSize: "0.75rem",
+                            fontWeight: "500"
+                        }}>
+                            Enrolled
+                        </span>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
 }
 
 function StudentDashboard() {
-    const courses: Course[] = [
-        { id: "1", courseId: "CISC474", name: "Web Application Development", instructor: "Dr. Bart", credits: 3, grade: "A", numericalGrade: 94.2 }
-    ];
-
-    const grades = courses.filter(course => course.grade);
-
-    const notifications: Notification[] = [];
-
     return (
         <div style={{ 
             minHeight: "100vh", 
@@ -67,77 +153,16 @@ function StudentDashboard() {
                             }}>
                                 My Courses
                             </h2>
-                            <div>
-                                {courses.map((course) => (
-                                    <div key={course.id} style={{
-                                        border: "1px solid #e5e7eb",
-                                        borderRadius: "8px",
-                                        padding: "0.75rem",
-                                        marginBottom: "0.75rem",
-                                        transition: "background-color 0.2s",
-                                        cursor: "pointer"
-                                    }}
-                                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f9fafb"}
-                                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = "transparent"}
-                                    >
-                                        <div style={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            alignItems: "start"
-                                        }}>
-                                            <div>
-                                                <h3 style={{
-                                                    fontSize: "0.875rem",
-                                                    fontWeight: "500",
-                                                    color: "#1f2937",
-                                                    margin: 0,
-                                                    marginBottom: "0.25rem"
-                                                }}>
-                                                    {course.name}
-                                                </h3>
-                                                <p style={{
-                                                    fontSize: "0.75rem",
-                                                    color: "#6b7280",
-                                                    margin: 0,
-                                                    marginBottom: "0.25rem"
-                                                }}>
-                                                    Course ID: {course.courseId}
-                                                </p>
-                                                <p style={{
-                                                    fontSize: "0.75rem",
-                                                    color: "#6b7280",
-                                                    margin: 0,
-                                                    marginBottom: "0.25rem"
-                                                }}>
-                                                    Instructor: {course.instructor}
-                                                </p>
-                                                <p style={{
-                                                    fontSize: "0.75rem",
-                                                    color: "#6b7280",
-                                                    margin: 0
-                                                }}>
-                                                    Credits: {course.credits}
-                                                </p>
-                                            </div>
-                                            {course.grade && (
-                                                <span style={{
-                                                    backgroundColor: "#dcfce7",
-                                                    color: "#166534",
-                                                    padding: "0.25rem 0.5rem",
-                                                    borderRadius: "12px",
-                                                    fontSize: "0.75rem",
-                                                    fontWeight: "500"
-                                                }}>
-                                                    {course.grade}
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                            <Suspense fallback={
+                                <div style={{ padding: "2rem", textAlign: "center", color: "#6b7280" }}>
+                                    Loading courses...
+                                </div>
+                            }>
+                                <CoursesContent />
+                            </Suspense>
                         </div>
 
-                        {/* Grades */}
+                        {/* Grades - Need to implement connection to /grades endpoint  */}
                         <div style={{
                             backgroundColor: "rgba(255, 255, 255, 0.95)",
                             backdropFilter: "blur(10px)",
@@ -155,51 +180,14 @@ function StudentDashboard() {
                                 My Grades
                             </h2>
                             <div>
-                                {grades.map((course) => (
-                                    <div key={course.id} style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                        padding: "0.75rem 0",
-                                        borderBottom: "1px solid #e5e7eb"
-                                    }}>
-                                        <div>
-                                            <p style={{
-                                                fontSize: "0.875rem",
-                                                fontWeight: "500",
-                                                color: "#1f2937",
-                                                margin: 0,
-                                                marginBottom: "0.25rem"
-                                            }}>
-                                                {course.name}
-                                            </p>
-                                            <p style={{
-                                                fontSize: "0.75rem",
-                                                color: "#6b7280",
-                                                margin: 0
-                                            }}>
-                                                {course.credits} credits
-                                            </p>
-                                        </div>
-                                        <span style={{
-                                            fontSize: "1.125rem",
-                                            fontWeight: "600",
-                                            color: "#2563eb"
-                                        }}>
-                                            {course.numericalGrade}
-                                        </span>
-                                    </div>
-                                ))}
-                                {grades.length === 0 && (
-                                    <p style={{
-                                        color: "#6b7280",
-                                        textAlign: "center",
-                                        padding: "1rem 0",
-                                        margin: 0
-                                    }}>
-                                        No grades posted yet
-                                    </p>
-                                )}
+                                <p style={{
+                                    color: "#6b7280",
+                                    textAlign: "center",
+                                    padding: "1rem 0",
+                                    margin: 0
+                                }}>
+                                    No grades posted yet
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -209,7 +197,7 @@ function StudentDashboard() {
                         gridTemplateColumns: "1fr 1fr",
                         gap: "1.5rem"
                     }}>
-                        {/* Profile */}
+                        {/* Profile - Need to implement connection to /userprofiles endpoint*/}
                         <div style={{
                             backgroundColor: "rgba(255, 255, 255, 0.95)",
                             backdropFilter: "blur(10px)",
@@ -317,7 +305,7 @@ function StudentDashboard() {
                             </div>
                         </div>
 
-                        {/* Notifications */}
+                        {/* Notifications - Need to implement connection to /announcements endpoint */}
                         <div style={{
                             backgroundColor: "rgba(255, 255, 255, 0.95)",
                             backdropFilter: "blur(10px)",
@@ -335,45 +323,15 @@ function StudentDashboard() {
                                 My Notifications
                             </h2>
                             <div>
-                                {notifications.length === 0 ? (
-                                    <p style={{
-                                        color: "#6b7280",
-                                        textAlign: "center",
-                                        padding: "2rem 0",
-                                        margin: 0,
-                                        fontSize: "0.875rem"
-                                    }}>
-                                        No new notifications
-                                    </p>
-                                ) : (
-                                    notifications.map((notification) => (
-                                        <div key={notification.id} style={{
-                                            borderLeft: "4px solid",
-                                            borderLeftColor: notification.type === "warning" ? "#fbbf24" : notification.type === "success" ? "#10b981" : "#3b82f6",
-                                            backgroundColor: notification.type === "warning" ? "#fefce8" : notification.type === "success" ? "#ecfdf5" : "#eff6ff",
-                                            padding: "0.75rem",
-                                            marginBottom: "0.75rem",
-                                            borderTopRightRadius: "6px",
-                                            borderBottomRightRadius: "6px"
-                                        }}>
-                                            <p style={{
-                                                fontSize: "0.75rem",
-                                                color: "#1f2937",
-                                                margin: 0,
-                                                marginBottom: "0.25rem"
-                                            }}>
-                                                {notification.message}
-                                            </p>
-                                            <p style={{
-                                                fontSize: "0.625rem",
-                                                color: "#6b7280",
-                                                margin: 0
-                                            }}>
-                                                {notification.date}
-                                            </p>
-                                        </div>
-                                    ))
-                                )}
+                                <p style={{
+                                    color: "#6b7280",
+                                    textAlign: "center",
+                                    padding: "2rem 0",
+                                    margin: 0,
+                                    fontSize: "0.875rem"
+                                }}>
+                                    No new notifications
+                                </p>
                             </div>
                         </div>
                     </div>
