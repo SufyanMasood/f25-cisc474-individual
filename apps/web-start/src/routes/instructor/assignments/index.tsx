@@ -29,7 +29,6 @@ interface Assignment {
 }
 
 function AssignmentsContent() {
-    // Fetch both courses and assignments
     const { data: courses = [], isLoading: coursesLoading } = useQuery({
         queryKey: ['courses'],
         queryFn: backendFetcher<Course[]>('/courses')
@@ -64,13 +63,11 @@ function AssignmentsContent() {
         );
     }
 
-    // Use courseId returned from assignment to find courseName
     const courseMap: Record<string, string> = {};
     courses.forEach((course) => {
         courseMap[course.courseId] = course.courseName;
     });
 
-    // Group assignments by due date
     const groupedAssignments: Record<string, Assignment[]> = {};
 
     assignments.forEach((assignment) => {
@@ -140,7 +137,7 @@ function AssignmentsContent() {
                                 <div style={{
                                     display: "flex",
                                     justifyContent: "space-between",
-                                    alignItems: "center"
+                                    alignItems: "flex-start"
                                 }}>
                                     <div style={{ flex: "0 0 250px" }}>
                                         <span style={{
@@ -164,16 +161,41 @@ function AssignmentsContent() {
                                         </h3>
                                     </div>
 
-                                    <div style={{ flex: 1, textAlign: "center", padding: "0 1rem" }}>
+                                    <div style={{ flex: 1, padding: "0 1rem" }}>
                                         <h2 style={{
                                             fontSize: "1.2rem",
                                             fontWeight: "700",
                                             color: "#111827",
                                             margin: 0,
-                                            lineHeight: "1.5"
+                                            lineHeight: "1.5",
+                                            marginBottom: "0.5rem"
                                         }}>
                                             {assignment.title}
                                         </h2>
+                                        
+                                        <p style={{
+                                            fontSize: "0.875rem",
+                                            color: "#6b7280",
+                                            margin: 0,
+                                            marginBottom: "0.75rem",
+                                            lineHeight: "1.4"
+                                        }}>
+                                            {assignment.description}
+                                        </p>
+                                        
+                                        <div style={{
+                                            display: "flex",
+                                            gap: "1rem",
+                                            fontSize: "0.75rem",
+                                            color: "#9ca3af"
+                                        }}>
+                                            <span>
+                                                <strong>Max Points:</strong> {assignment.maxPoints}
+                                            </span>
+                                            <span>
+                                                <strong>Published:</strong> {formatDate(assignment.publishDateTime)} at {formatTime(assignment.publishDateTime)}
+                                            </span>
+                                        </div>
                                     </div>
 
                                     <div style={{ flex: "0 0 auto", textAlign: "right" }}>
