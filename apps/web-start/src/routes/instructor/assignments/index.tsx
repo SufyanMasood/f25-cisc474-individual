@@ -1,12 +1,14 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { Suspense } from 'react'
 import Navbar from '../../../components/Navbar'
 import PageHeader from '../../../components/PageHeader'
 import { backendFetcher } from '../../../integrations/fetcher'
+import { buttonStyles } from '../../../styles/buttonStyles'
+import { layoutStyles } from '../../../styles/layoutStyles'
 
 export const Route = createFileRoute('/instructor/assignments/')({
-  component: InstructorAssignments
+    component: InstructorAssignments
 })
 
 interface Course {
@@ -29,7 +31,6 @@ interface Assignment {
 }
 
 function AssignmentsContent() {
-    // Fetch both courses and assignments
     const { data: courses = [], isLoading: coursesLoading } = useQuery({
         queryKey: ['courses'],
         queryFn: backendFetcher<Course[]>('/courses')
@@ -64,18 +65,16 @@ function AssignmentsContent() {
         );
     }
 
-    // Use courseId returned from assignment to find courseName
     const courseMap: Record<string, string> = {};
     courses.forEach((course) => {
         courseMap[course.courseId] = course.courseName;
     });
 
-    // Group assignments by due date
     const groupedAssignments: Record<string, Assignment[]> = {};
 
     assignments.forEach((assignment) => {
         const dateString: string = new Date(assignment.dueDateTime).toISOString().split('T')[0] as string;
-        
+
         if (!groupedAssignments[dateString]) {
             groupedAssignments[dateString] = [];
         }
@@ -102,171 +101,152 @@ function AssignmentsContent() {
             {Object.entries(groupedAssignments)
                 .sort(([a], [b]) => new Date(a).getTime() - new Date(b).getTime())
                 .map(([date, assignmentsForDate]) => (
-                <div key={date} style={{ marginBottom: "2rem" }}>
-                    <h2 style={{
-                        fontSize: "1.25rem",
-                        fontWeight: "700",
-                        color: "#1f2937",
-                        margin: 0,
-                        marginBottom: "1.25rem",
-                        paddingBottom: "0.75rem",
-                        borderBottom: "2px solid #e5e7eb"
-                    }}>
-                        {formatDate(date)}
-                    </h2>
-                    
-                    <div>
-                        {assignmentsForDate.map((assignment) => (
-                            <div
-                                key={assignment.assignmentId}
-                                style={{
-                                    border: "1px solid #e5e7eb",
-                                    borderRadius: "12px",
-                                    padding: "1.75rem",
-                                    marginBottom: "1.25rem",
-                                    transition: "all 0.2s",
-                                    cursor: "pointer",
-                                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.08)"
-                                }}
-                                onMouseOver={(e) => {
-                                    e.currentTarget.style.backgroundColor = "#f8fafc";
-                                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.12)";
-                                }}
-                                onMouseOut={(e) => {
-                                    e.currentTarget.style.backgroundColor = "transparent";
-                                    e.currentTarget.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.08)";
-                                }}
-                            >
-                                <div style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center"
-                                }}>
-                                    <div style={{ flex: "0 0 250px" }}>
-                                        <span style={{
-                                            fontSize: "0.85rem",
-                                            fontWeight: "600",
-                                            color: "#6366f1",
-                                            textTransform: "uppercase",
-                                            letterSpacing: "0.05em"
-                                        }}>
-                                            {courseMap[assignment.courseId] || assignment.courseId}
-                                        </span>
-                                        <h3 style={{
-                                            fontSize: "1.05rem",
-                                            fontWeight: "600",
-                                            color: "#374151",
-                                            margin: 0,
-                                            marginTop: "0.375rem",
-                                            lineHeight: "1.4"
-                                        }}>
-                                            {assignment.assignmentType}
-                                        </h3>
-                                    </div>
+                    <div key={date} style={{ marginBottom: "2rem" }}>
+                        <h2 style={{
+                            fontSize: "1.25rem",
+                            fontWeight: "700",
+                            color: "#1f2937",
+                            margin: 0,
+                            marginBottom: "1.25rem",
+                            paddingBottom: "0.75rem",
+                            borderBottom: "2px solid #e5e7eb"
+                        }}>
+                            {formatDate(date)}
+                        </h2>
 
-                                    <div style={{ flex: 1, textAlign: "center", padding: "0 1rem" }}>
-                                        <h2 style={{
-                                            fontSize: "1.2rem",
-                                            fontWeight: "700",
-                                            color: "#111827",
-                                            margin: 0,
-                                            lineHeight: "1.5"
-                                        }}>
-                                            {assignment.title}
-                                        </h2>
-                                    </div>
-
-                                    <div style={{ flex: "0 0 auto", textAlign: "right" }}>
-                                        <div style={{ display: "flex", gap: "0.75rem", marginBottom: "0.75rem" }}>
-                                            <button
-                                                style={{
-                                                    backgroundColor: "transparent",
-                                                    color: "#059669",
-                                                    border: "1.5px solid #059669",
-                                                    padding: "0.625rem 1rem",
-                                                    borderRadius: "8px",
-                                                    fontSize: "0.85rem",
-                                                    fontWeight: "600",
-                                                    cursor: "pointer",
-                                                    transition: "all 0.2s",
-                                                    fontFamily: "var(--font-geist-sans)"
-                                                }}
-                                                onMouseOver={(e) => {
-                                                    e.currentTarget.style.backgroundColor = "#059669";
-                                                    e.currentTarget.style.color = "white";
-                                                }}
-                                                onMouseOut={(e) => {
-                                                    e.currentTarget.style.backgroundColor = "transparent";
-                                                    e.currentTarget.style.color = "#059669";
-                                                }}
-                                            >
-                                                View
-                                            </button>
-                                            <button
-                                                style={{
-                                                    backgroundColor: "transparent",
-                                                    color: "#667eea",
-                                                    border: "1.5px solid #667eea",
-                                                    padding: "0.625rem 1rem",
-                                                    borderRadius: "8px",
-                                                    fontSize: "0.85rem",
-                                                    fontWeight: "600",
-                                                    cursor: "pointer",
-                                                    transition: "all 0.2s",
-                                                    fontFamily: "var(--font-geist-sans)"
-                                                }}
-                                                onMouseOver={(e) => {
-                                                    e.currentTarget.style.backgroundColor = "#667eea";
-                                                    e.currentTarget.style.color = "white";
-                                                }}
-                                                onMouseOut={(e) => {
-                                                    e.currentTarget.style.backgroundColor = "transparent";
-                                                    e.currentTarget.style.color = "#667eea";
-                                                }}
-                                            >
-                                                Edit
-                                            </button>
-                                            <button
-                                                style={{
-                                                    backgroundColor: "transparent",
-                                                    color: "#dc2626",
-                                                    border: "1.5px solid #dc2626",
-                                                    padding: "0.625rem 1rem",
-                                                    borderRadius: "8px",
-                                                    fontSize: "0.85rem",
-                                                    fontWeight: "600",
-                                                    cursor: "pointer",
-                                                    transition: "all 0.2s",
-                                                    fontFamily: "var(--font-geist-sans)"
-                                                }}
-                                                onMouseOver={(e) => {
-                                                    e.currentTarget.style.backgroundColor = "#dc2626";
-                                                    e.currentTarget.style.color = "white";
-                                                }}
-                                                onMouseOut={(e) => {
-                                                    e.currentTarget.style.backgroundColor = "transparent";
-                                                    e.currentTarget.style.color = "#dc2626";
-                                                }}
-                                            >
-                                                Delete
-                                            </button>
+                        <div>
+                            {assignmentsForDate.map((assignment) => (
+                                <div
+                                    key={assignment.assignmentId}
+                                    style={{
+                                        border: "1px solid #e5e7eb",
+                                        borderRadius: "12px",
+                                        padding: "1.75rem",
+                                        marginBottom: "1.25rem",
+                                        transition: "all 0.2s",
+                                        cursor: "pointer",
+                                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.08)"
+                                    }}
+                                    onMouseOver={(e) => {
+                                        e.currentTarget.style.backgroundColor = "#f8fafc";
+                                        e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.12)";
+                                    }}
+                                    onMouseOut={(e) => {
+                                        e.currentTarget.style.backgroundColor = "transparent";
+                                        e.currentTarget.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.08)";
+                                    }}
+                                >
+                                    <div style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "flex-start"
+                                    }}>
+                                        <div style={{ flex: "0 0 250px" }}>
+                                            <span style={{
+                                                fontSize: "0.85rem",
+                                                fontWeight: "600",
+                                                color: "#6366f1",
+                                                textTransform: "uppercase",
+                                                letterSpacing: "0.05em"
+                                            }}>
+                                                {courseMap[assignment.courseId] || assignment.courseId}
+                                            </span>
+                                            <h3 style={{
+                                                fontSize: "1.05rem",
+                                                fontWeight: "600",
+                                                color: "#374151",
+                                                margin: 0,
+                                                marginTop: "0.375rem",
+                                                lineHeight: "1.4"
+                                            }}>
+                                                {assignment.assignmentType}
+                                            </h3>
                                         </div>
-                                        <p style={{
-                                            fontSize: "0.9rem",
-                                            color: "#6b7280",
-                                            margin: 0,
-                                            fontWeight: "500"
-                                        }}>
-                                            Due: {formatTime(assignment.dueDateTime)}
-                                        </p>
+
+                                        <div style={{ flex: 1, padding: "0 1rem" }}>
+                                            <h2 style={{
+                                                fontSize: "1.2rem",
+                                                fontWeight: "700",
+                                                color: "#111827",
+                                                margin: 0,
+                                                lineHeight: "1.5",
+                                                marginBottom: "0.5rem"
+                                            }}>
+                                                {assignment.title}
+                                            </h2>
+
+                                            <p style={{
+                                                fontSize: "0.875rem",
+                                                color: "#6b7280",
+                                                margin: 0,
+                                                marginBottom: "0.75rem",
+                                                lineHeight: "1.4"
+                                            }}>
+                                                {assignment.description}
+                                            </p>
+
+                                            <div style={{
+                                                display: "flex",
+                                                gap: "1rem",
+                                                fontSize: "0.75rem",
+                                                color: "#9ca3af"
+                                            }}>
+                                                <span>
+                                                    <strong>Max Points:</strong> {assignment.maxPoints}
+                                                </span>
+                                                <span>
+                                                    <strong>Published:</strong> {formatDate(assignment.publishDateTime)} at {formatTime(assignment.publishDateTime)}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div style={{ flex: "0 0 auto", textAlign: "right" }}>
+                                            <div style={{ display: "flex", gap: "0.75rem", marginBottom: "0.75rem" }}>
+                                                <button
+                                                    style={buttonStyles.primary}
+                                                    onMouseOver={(e) => {
+                                                        e.currentTarget.style.backgroundColor = buttonStyles.primaryHover.backgroundColor;
+                                                        e.currentTarget.style.color = buttonStyles.primaryHover.color;
+                                                    }}
+                                                    onMouseOut={(e) => {
+                                                        e.currentTarget.style.backgroundColor = buttonStyles.primary.backgroundColor;
+                                                        e.currentTarget.style.color = buttonStyles.primary.color;
+                                                    }}
+                                                >
+                                                    View
+                                                </button>
+                                                <Link to="/instructor/assignments/$assignmentId/manage" params={{ assignmentId: assignment.assignmentId }}>
+                                                    <button
+                                                        style={buttonStyles.primary}
+                                                        onMouseOver={(e) => {
+                                                            e.currentTarget.style.backgroundColor = buttonStyles.primaryHover.backgroundColor;
+                                                            e.currentTarget.style.color = buttonStyles.primaryHover.color;
+                                                        }}
+                                                        onMouseOut={(e) => {
+                                                            e.currentTarget.style.backgroundColor = buttonStyles.primary.backgroundColor;
+                                                            e.currentTarget.style.color = buttonStyles.primary.color;
+                                                        }}
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                </Link>
+                                            </div>
+                                            <p style={{
+                                                fontSize: "0.9rem",
+                                                color: "#6b7280",
+                                                margin: 0,
+                                                fontWeight: "500"
+                                            }}>
+                                                Due: {formatTime(assignment.dueDateTime)}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                </div>
-            ))}
-            
+                ))}
+
             {Object.keys(groupedAssignments).length === 0 && (
                 <div style={{
                     padding: "3rem",
@@ -284,46 +264,33 @@ function AssignmentsContent() {
 
 function InstructorAssignments() {
     return (
-        <div style={{ 
-            minHeight: "100vh", 
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-            fontFamily: "var(--font-geist-sans)"
-        }}>
-            <div style={{ display: "flex", minHeight: "100vh" }}>
+        <div style={layoutStyles.pageBackground}>
+        <div style={layoutStyles.pageContainer}>
                 <Navbar userType="instructor" activeItem="assignments" />
 
                 <div style={{ flex: 1, padding: "2rem" }}>
                     <PageHeader title="Assignments" userType="instructor" />
 
-                    <div style={{ 
+                    <div style={{
                         marginBottom: "2rem",
                         display: "flex",
                         justifyContent: "flex-end"
                     }}>
-                        <button
-                            style={{
-                                backgroundColor: "white",
-                                color: "#374151",
-                                border: "2px solid #374151",
-                                padding: "0.75rem 1.5rem",
-                                borderRadius: "12px",
-                                fontSize: "0.875rem",
-                                fontWeight: "600",
-                                cursor: "pointer",
-                                transition: "all 0.2s ease",
-                                fontFamily: "var(--font-geist-sans)"
-                            }}
-                            onMouseOver={(e) => {
-                                e.currentTarget.style.backgroundColor = "#374151";
-                                e.currentTarget.style.color = "white";
-                            }}
-                            onMouseOut={(e) => {
-                                e.currentTarget.style.backgroundColor = "white";
-                                e.currentTarget.style.color = "#374151";
-                            }}
-                        >
-                            Create Assignment
-                        </button>
+                        <Link to="/instructor/assignments/create">
+                            <button
+                                style={buttonStyles.green}
+                                onMouseOver={(e) => {
+                                    e.currentTarget.style.backgroundColor = buttonStyles.greenHover.backgroundColor;
+                                    e.currentTarget.style.color = buttonStyles.greenHover.color;
+                                }}
+                                onMouseOut={(e) => {
+                                    e.currentTarget.style.backgroundColor = buttonStyles.green.backgroundColor;
+                                    e.currentTarget.style.color = buttonStyles.green.color;
+                                }}
+                            >
+                                Create Assignment
+                            </button>
+                        </Link>
                     </div>
 
                     <div style={{

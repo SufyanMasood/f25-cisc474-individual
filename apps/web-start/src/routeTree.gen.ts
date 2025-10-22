@@ -14,6 +14,8 @@ import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as StudentDashboardIndexRouteImport } from './routes/student/dashboard/index'
 import { Route as InstructorAssignmentsIndexRouteImport } from './routes/instructor/assignments/index'
 import { Route as AdminCoursesIndexRouteImport } from './routes/admin/courses/index'
+import { Route as InstructorAssignmentsCreateRouteImport } from './routes/instructor/assignments/create'
+import { Route as InstructorAssignmentsAssignmentIdManageRouteImport } from './routes/instructor/assignments/$assignmentId.manage'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -41,59 +43,85 @@ const AdminCoursesIndexRoute = AdminCoursesIndexRouteImport.update({
   path: '/admin/courses/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InstructorAssignmentsCreateRoute =
+  InstructorAssignmentsCreateRouteImport.update({
+    id: '/instructor/assignments/create',
+    path: '/instructor/assignments/create',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const InstructorAssignmentsAssignmentIdManageRoute =
+  InstructorAssignmentsAssignmentIdManageRouteImport.update({
+    id: '/instructor/assignments/$assignmentId/manage',
+    path: '/instructor/assignments/$assignmentId/manage',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginIndexRoute
+  '/instructor/assignments/create': typeof InstructorAssignmentsCreateRoute
   '/admin/courses': typeof AdminCoursesIndexRoute
   '/instructor/assignments': typeof InstructorAssignmentsIndexRoute
   '/student/dashboard': typeof StudentDashboardIndexRoute
+  '/instructor/assignments/$assignmentId/manage': typeof InstructorAssignmentsAssignmentIdManageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginIndexRoute
+  '/instructor/assignments/create': typeof InstructorAssignmentsCreateRoute
   '/admin/courses': typeof AdminCoursesIndexRoute
   '/instructor/assignments': typeof InstructorAssignmentsIndexRoute
   '/student/dashboard': typeof StudentDashboardIndexRoute
+  '/instructor/assignments/$assignmentId/manage': typeof InstructorAssignmentsAssignmentIdManageRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/login/': typeof LoginIndexRoute
+  '/instructor/assignments/create': typeof InstructorAssignmentsCreateRoute
   '/admin/courses/': typeof AdminCoursesIndexRoute
   '/instructor/assignments/': typeof InstructorAssignmentsIndexRoute
   '/student/dashboard/': typeof StudentDashboardIndexRoute
+  '/instructor/assignments/$assignmentId/manage': typeof InstructorAssignmentsAssignmentIdManageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/login'
+    | '/instructor/assignments/create'
     | '/admin/courses'
     | '/instructor/assignments'
     | '/student/dashboard'
+    | '/instructor/assignments/$assignmentId/manage'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
+    | '/instructor/assignments/create'
     | '/admin/courses'
     | '/instructor/assignments'
     | '/student/dashboard'
+    | '/instructor/assignments/$assignmentId/manage'
   id:
     | '__root__'
     | '/'
     | '/login/'
+    | '/instructor/assignments/create'
     | '/admin/courses/'
     | '/instructor/assignments/'
     | '/student/dashboard/'
+    | '/instructor/assignments/$assignmentId/manage'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
+  InstructorAssignmentsCreateRoute: typeof InstructorAssignmentsCreateRoute
   AdminCoursesIndexRoute: typeof AdminCoursesIndexRoute
   InstructorAssignmentsIndexRoute: typeof InstructorAssignmentsIndexRoute
   StudentDashboardIndexRoute: typeof StudentDashboardIndexRoute
+  InstructorAssignmentsAssignmentIdManageRoute: typeof InstructorAssignmentsAssignmentIdManageRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -133,15 +161,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCoursesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/instructor/assignments/create': {
+      id: '/instructor/assignments/create'
+      path: '/instructor/assignments/create'
+      fullPath: '/instructor/assignments/create'
+      preLoaderRoute: typeof InstructorAssignmentsCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/instructor/assignments/$assignmentId/manage': {
+      id: '/instructor/assignments/$assignmentId/manage'
+      path: '/instructor/assignments/$assignmentId/manage'
+      fullPath: '/instructor/assignments/$assignmentId/manage'
+      preLoaderRoute: typeof InstructorAssignmentsAssignmentIdManageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginIndexRoute: LoginIndexRoute,
+  InstructorAssignmentsCreateRoute: InstructorAssignmentsCreateRoute,
   AdminCoursesIndexRoute: AdminCoursesIndexRoute,
   InstructorAssignmentsIndexRoute: InstructorAssignmentsIndexRoute,
   StudentDashboardIndexRoute: StudentDashboardIndexRoute,
+  InstructorAssignmentsAssignmentIdManageRoute:
+    InstructorAssignmentsAssignmentIdManageRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

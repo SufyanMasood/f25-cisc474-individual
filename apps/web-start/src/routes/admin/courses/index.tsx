@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
-
 import Navbar from '../../../components/Navbar';
 import PageHeader from '../../../components/PageHeader';
+import { buttonStyles } from '../../../styles/buttonStyles';
 
 export const Route = createFileRoute('/admin/courses/')({
-  component: AdminCourses
+    component: AdminCourses
 })
 
 interface Course {
@@ -16,14 +16,14 @@ interface Course {
 }
 
 function AdminCourses() {
-    
+
     const courses: Course[] = [
-        { id: "1", courseId: "CISC474", name: "Web Application Development", instructor: "Dr. Bart", meetingTimes: "MWF 12:40-1:35"}
+        { id: "1", courseId: "CISC474", name: "Web Application Development", instructor: "Dr. Bart", meetingTimes: "MWF 12:40-1:35" }
     ];
 
     return (
-        <div style={{ 
-            minHeight: "100vh", 
+        <div style={{
+            minHeight: "100vh",
             background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
             fontFamily: "var(--font-geist-sans)"
         }}>
@@ -33,32 +33,21 @@ function AdminCourses() {
                 <div style={{ flex: 1, padding: "2rem" }}>
                     <PageHeader title="Courses" userType="admin" />
 
-                   {/* Create Course button */}
-                    <div style={{ 
+                    {/* Create Course button */}
+                    <div style={{
                         marginBottom: "2rem",
                         display: "flex",
                         justifyContent: "flex-end"
                     }}>
                         <button
-                           style={{
-                                backgroundColor: "white",
-                                color: "#374151",
-                                border: "2px solid #374151",
-                                padding: "0.75rem 1.5rem",
-                                borderRadius: "12px",
-                                fontSize: "0.875rem",
-                                fontWeight: "600",
-                                cursor: "pointer",
-                                transition: "all 0.2s ease",
-                                fontFamily: "var(--font-geist-sans)"
-                            }}
+                            style={buttonStyles.green}
                             onMouseOver={(e) => {
-                                e.currentTarget.style.backgroundColor = "#374151";
-                                e.currentTarget.style.color = "white";
+                                e.currentTarget.style.backgroundColor = buttonStyles.greenHover.backgroundColor;
+                                e.currentTarget.style.color = buttonStyles.greenHover.color;
                             }}
                             onMouseOut={(e) => {
-                                e.currentTarget.style.backgroundColor = "white";
-                                e.currentTarget.style.color = "#374151";
+                                e.currentTarget.style.backgroundColor = buttonStyles.green.backgroundColor;
+                                e.currentTarget.style.color = buttonStyles.green.color;
                             }}
                         >
                             Create Course
@@ -157,49 +146,27 @@ function AdminCourses() {
 
                                 <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
                                     <button
-                                        style={{
-                                            backgroundColor: "transparent",
-                                            color: "#059669",
-                                            border: "1.5px solid #059669",
-                                            padding: "0.5rem 0.875rem",
-                                            borderRadius: "8px",
-                                            fontSize: "0.8rem",
-                                            fontWeight: "600",
-                                            cursor: "pointer",
-                                            transition: "all 0.2s",
-                                            fontFamily: "var(--font-geist-sans)"
-                                        }}
+                                        style={buttonStyles.primary}
                                         onMouseOver={(e) => {
-                                            e.currentTarget.style.backgroundColor = "#059669";
-                                            e.currentTarget.style.color = "white";
+                                            e.currentTarget.style.backgroundColor = buttonStyles.primaryHover.backgroundColor;
+                                            e.currentTarget.style.color = buttonStyles.primaryHover.color;
                                         }}
                                         onMouseOut={(e) => {
-                                            e.currentTarget.style.backgroundColor = "transparent";
-                                            e.currentTarget.style.color = "#059669";
+                                            e.currentTarget.style.backgroundColor = buttonStyles.primary.backgroundColor;
+                                            e.currentTarget.style.color = buttonStyles.primary.color;
                                         }}
                                     >
                                         View
                                     </button>
                                     <button
-                                        style={{
-                                            backgroundColor: "transparent",
-                                            color: "#667eea",
-                                            border: "1.5px solid #667eea",
-                                            padding: "0.5rem 0.875rem",
-                                            borderRadius: "8px",
-                                            fontSize: "0.8rem",
-                                            fontWeight: "600",
-                                            cursor: "pointer",
-                                            transition: "all 0.2s",
-                                            fontFamily: "var(--font-geist-sans)"
-                                        }}
+                                        style={buttonStyles.primary}
                                         onMouseOver={(e) => {
-                                            e.currentTarget.style.backgroundColor = "#667eea";
-                                            e.currentTarget.style.color = "white";
+                                            e.currentTarget.style.backgroundColor = buttonStyles.primaryHover.backgroundColor;
+                                            e.currentTarget.style.color = buttonStyles.primaryHover.color;
                                         }}
                                         onMouseOut={(e) => {
-                                            e.currentTarget.style.backgroundColor = "transparent";
-                                            e.currentTarget.style.color = "#667eea";
+                                            e.currentTarget.style.backgroundColor = buttonStyles.primary.backgroundColor;
+                                            e.currentTarget.style.color = buttonStyles.primary.color;
                                         }}
                                     >
                                         Edit
@@ -207,7 +174,7 @@ function AdminCourses() {
                                 </div>
                             </div>
                         ))}
-                        
+
                         {courses.length === 0 && (
                             <div style={{
                                 padding: "3rem",
