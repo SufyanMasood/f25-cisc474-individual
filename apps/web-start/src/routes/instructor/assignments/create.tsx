@@ -1,10 +1,11 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
-import { AssignmentCreateIn } from '@repo/api/assignments';
-import Navbar from '../../../components/Navbar';
-import PageHeader from '../../../components/PageHeader';
-import { buttonStyles } from '../../../styles/buttonStyles';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
+import { AssignmentCreateIn } from '@repo/api/assignments'
+import Navbar from '../../../components/Navbar'
+import PageHeader from '../../../components/PageHeader'
+import { buttonStyles } from '../../../styles/buttonStyles'
+import { layoutStyles } from '../../../styles/layoutStyles'
 
 export const Route = createFileRoute('/instructor/assignments/create')({
   component: CreateAssignment,
@@ -46,12 +47,8 @@ function CreateAssignment() {
   };
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      fontFamily: "var(--font-geist-sans)"
-    }}>
-      <div style={{ display: "flex", minHeight: "100vh" }}>
+    <div style={layoutStyles.pageBackground}>
+      <div style={layoutStyles.pageContainer}>
         <Navbar userType="instructor" activeItem="assignments" />
 
         <div style={{ flex: 1, padding: "2rem" }}>

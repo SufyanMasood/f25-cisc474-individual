@@ -1,11 +1,12 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState, useEffect } from 'react';
-import { AssignmentUpdateIn } from '@repo/api/assignments';
-import Navbar from '../../../components/Navbar';
-import PageHeader from '../../../components/PageHeader';
-import { backendFetcher } from '../../../integrations/fetcher';
-import { buttonStyles } from '../../../styles/buttonStyles';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useState, useEffect } from 'react'
+import { AssignmentUpdateIn } from '@repo/api/assignments'
+import Navbar from '../../../components/Navbar'
+import PageHeader from '../../../components/PageHeader'
+import { backendFetcher } from '../../../integrations/fetcher'
+import { buttonStyles } from '../../../styles/buttonStyles'
+import { layoutStyles } from '../../../styles/layoutStyles'
 
 export const Route = createFileRoute(
   '/instructor/assignments/$assignmentId/manage',
@@ -222,15 +223,7 @@ function ManageAssignment() {
 
   if (isLoading) {
     return (
-      <div style={{
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        fontFamily: "var(--font-geist-sans)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "white"
-      }}>
+      <div style={layoutStyles.centerMessage}>
         Loading assignment...
       </div>
     );
@@ -238,27 +231,15 @@ function ManageAssignment() {
 
   if (error || !assignment) {
     return (
-      <div style={{
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        fontFamily: "var(--font-geist-sans)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "white"
-      }}>
+      <div style={layoutStyles.centerMessage}>
         Error loading assignment: {error?.message || 'Assignment not found'}
       </div>
     );
   }
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      fontFamily: "var(--font-geist-sans)"
-    }}>
-      <div style={{ display: "flex", minHeight: "100vh" }}>
+     <div style={layoutStyles.pageBackground}>
+      <div style={layoutStyles.pageContainer}>
         <Navbar userType="instructor" activeItem="assignments" />
 
         <div style={{ flex: 1, padding: "2rem" }}>
