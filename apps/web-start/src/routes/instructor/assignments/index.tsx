@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { Suspense } from 'react'
 import Navbar from '../../../components/Navbar'
@@ -322,6 +322,7 @@ function InstructorAssignments() {
                         display: "flex",
                         justifyContent: "flex-end"
                     }}>
+                        <Link to="/instructor/assignments/create">
                         <button
                             style={{
                                 backgroundColor: "white",
@@ -346,6 +347,7 @@ function InstructorAssignments() {
                         >
                             Create Assignment
                         </button>
+                        </Link>
                     </div>
 
                     <div style={{
