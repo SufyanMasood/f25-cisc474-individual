@@ -6,10 +6,10 @@ import Navbar from '../../../components/Navbar';
 import PageHeader from '../../../components/PageHeader';
 
 export const Route = createFileRoute('/instructor/assignments/create')({
-  component: RouteComponent,
+  component: CreateAssignment,
 })
 
-function RouteComponent() {
+function CreateAssignment() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   
