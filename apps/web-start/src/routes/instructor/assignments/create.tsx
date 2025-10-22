@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { AssignmentCreateIn } from '@repo/api/assignments';
 import Navbar from '../../../components/Navbar';
 import PageHeader from '../../../components/PageHeader';
+import { buttonStyles } from '../../../styles/buttonStyles';
 
 export const Route = createFileRoute('/instructor/assignments/create')({
   component: CreateAssignment,
@@ -12,7 +13,7 @@ export const Route = createFileRoute('/instructor/assignments/create')({
 function CreateAssignment() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  
+
   const [formData, setFormData] = useState<AssignmentCreateIn>({
     title: '',
     description: '',
@@ -45,8 +46,8 @@ function CreateAssignment() {
   };
 
   return (
-    <div style={{ 
-      minHeight: "100vh", 
+    <div style={{
+      minHeight: "100vh",
       background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       fontFamily: "var(--font-geist-sans)"
     }}>
@@ -64,10 +65,10 @@ function CreateAssignment() {
             padding: "2rem",
           }}>
             {createMutation.isPending && (
-              <div style={{ 
-                padding: "1rem", 
-                backgroundColor: "#eff6ff", 
-                borderRadius: "8px", 
+              <div style={{
+                padding: "1rem",
+                backgroundColor: "#eff6ff",
+                borderRadius: "8px",
                 marginBottom: "1rem",
                 color: "#1e40af"
               }}>
@@ -76,10 +77,10 @@ function CreateAssignment() {
             )}
 
             {createMutation.isError && (
-              <div style={{ 
-                padding: "1rem", 
-                backgroundColor: "#fee", 
-                borderRadius: "8px", 
+              <div style={{
+                padding: "1rem",
+                backgroundColor: "#fee",
+                borderRadius: "8px",
                 marginBottom: "1rem",
                 color: "#dc2626"
               }}>
@@ -89,9 +90,9 @@ function CreateAssignment() {
 
             <form onSubmit={handleSubmit}>
               <div style={{ marginBottom: "1.5rem" }}>
-                <label style={{ 
-                  display: "block", 
-                  marginBottom: "0.5rem", 
+                <label style={{
+                  display: "block",
+                  marginBottom: "0.5rem",
                   fontWeight: "600",
                   color: "#374151",
                   fontSize: "0.875rem"
@@ -114,9 +115,9 @@ function CreateAssignment() {
               </div>
 
               <div style={{ marginBottom: "1.5rem" }}>
-                <label style={{ 
-                  display: "block", 
-                  marginBottom: "0.5rem", 
+                <label style={{
+                  display: "block",
+                  marginBottom: "0.5rem",
                   fontWeight: "600",
                   color: "#374151",
                   fontSize: "0.875rem"
@@ -141,9 +142,9 @@ function CreateAssignment() {
               </div>
 
               <div style={{ marginBottom: "1.5rem" }}>
-                <label style={{ 
-                  display: "block", 
-                  marginBottom: "0.5rem", 
+                <label style={{
+                  display: "block",
+                  marginBottom: "0.5rem",
                   fontWeight: "600",
                   color: "#374151",
                   fontSize: "0.875rem"
@@ -167,9 +168,9 @@ function CreateAssignment() {
               </div>
 
               <div style={{ marginBottom: "1.5rem" }}>
-                <label style={{ 
-                  display: "block", 
-                  marginBottom: "0.5rem", 
+                <label style={{
+                  display: "block",
+                  marginBottom: "0.5rem",
                   fontWeight: "600",
                   color: "#374151",
                   fontSize: "0.875rem"
@@ -193,9 +194,9 @@ function CreateAssignment() {
               </div>
 
               <div style={{ marginBottom: "1.5rem" }}>
-                <label style={{ 
-                  display: "block", 
-                  marginBottom: "0.5rem", 
+                <label style={{
+                  display: "block",
+                  marginBottom: "0.5rem",
                   fontWeight: "600",
                   color: "#374151",
                   fontSize: "0.875rem"
@@ -219,9 +220,9 @@ function CreateAssignment() {
               </div>
 
               <div style={{ marginBottom: "1.5rem" }}>
-                <label style={{ 
-                  display: "block", 
-                  marginBottom: "0.5rem", 
+                <label style={{
+                  display: "block",
+                  marginBottom: "0.5rem",
                   fontWeight: "600",
                   color: "#374151",
                   fontSize: "0.875rem"
@@ -244,9 +245,9 @@ function CreateAssignment() {
               </div>
 
               <div style={{ marginBottom: "2rem" }}>
-                <label style={{ 
-                  display: "block", 
-                  marginBottom: "0.5rem", 
+                <label style={{
+                  display: "block",
+                  marginBottom: "0.5rem",
                   fontWeight: "600",
                   color: "#374151",
                   fontSize: "0.875rem"
@@ -272,15 +273,14 @@ function CreateAssignment() {
                 <Link to="/instructor/assignments">
                   <button
                     type="button"
-                    style={{
-                      padding: "0.75rem 1.5rem",
-                      border: "1px solid #d1d5db",
-                      borderRadius: "8px",
-                      backgroundColor: "white",
-                      color: "#374151",
-                      cursor: "pointer",
-                      fontSize: "0.875rem",
-                      fontWeight: "600",
+                    style={buttonStyles.secondary}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.backgroundColor = buttonStyles.secondaryHover.backgroundColor;
+                      e.currentTarget.style.color = buttonStyles.secondaryHover.color;
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.backgroundColor = buttonStyles.secondary.backgroundColor;
+                      e.currentTarget.style.color = buttonStyles.secondary.color;
                     }}
                   >
                     Cancel
@@ -289,15 +289,14 @@ function CreateAssignment() {
                 <button
                   type="submit"
                   disabled={createMutation.isPending}
-                  style={{
-                    padding: "0.75rem 1.5rem",
-                    border: "none",
-                    borderRadius: "8px",
-                    backgroundColor: createMutation.isPending ? "#9ca3af" : "#667eea",
-                    color: "white",
-                    cursor: createMutation.isPending ? "not-allowed" : "pointer",
-                    fontSize: "0.875rem",
-                    fontWeight: "600",
+                  style={buttonStyles.green}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = buttonStyles.greenHover.backgroundColor;
+                    e.currentTarget.style.color = buttonStyles.greenHover.color;
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = buttonStyles.green.backgroundColor;
+                    e.currentTarget.style.color = buttonStyles.green.color;
                   }}
                 >
                   {createMutation.isPending ? 'Creating...' : 'Create Assignment'}

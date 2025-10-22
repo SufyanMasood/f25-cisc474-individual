@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 import Navbar from '../../../components/Navbar'
 import PageHeader from '../../../components/PageHeader'
 import { backendFetcher } from '../../../integrations/fetcher'
+import { buttonStyles } from '../../../styles/buttonStyles'
 
 export const Route = createFileRoute('/instructor/assignments/')({
     component: InstructorAssignments
@@ -201,51 +202,28 @@ function AssignmentsContent() {
                                         <div style={{ flex: "0 0 auto", textAlign: "right" }}>
                                             <div style={{ display: "flex", gap: "0.75rem", marginBottom: "0.75rem" }}>
                                                 <button
-                                                    style={{
-                                                        backgroundColor: "transparent",
-                                                        color: "#059669",
-                                                        border: "1.5px solid #059669",
-                                                        padding: "0.625rem 1rem",
-                                                        borderRadius: "8px",
-                                                        fontSize: "0.85rem",
-                                                        fontWeight: "600",
-                                                        cursor: "pointer",
-                                                        transition: "all 0.2s",
-                                                        fontFamily: "var(--font-geist-sans)"
-                                                    }}
+                                                    style={buttonStyles.primary}
                                                     onMouseOver={(e) => {
-                                                        e.currentTarget.style.backgroundColor = "#059669";
-                                                        e.currentTarget.style.color = "white";
+                                                        e.currentTarget.style.backgroundColor = buttonStyles.primaryHover.backgroundColor;
+                                                        e.currentTarget.style.color = buttonStyles.primaryHover.color;
                                                     }}
                                                     onMouseOut={(e) => {
-                                                        e.currentTarget.style.backgroundColor = "transparent";
-                                                        e.currentTarget.style.color = "#059669";
+                                                        e.currentTarget.style.backgroundColor = buttonStyles.primary.backgroundColor;
+                                                        e.currentTarget.style.color = buttonStyles.primary.color;
                                                     }}
                                                 >
                                                     View
                                                 </button>
                                                 <Link to="/instructor/assignments/$assignmentId/manage" params={{ assignmentId: assignment.assignmentId }}>
                                                     <button
-
-                                                        style={{
-                                                            backgroundColor: "transparent",
-                                                            color: "#667eea",
-                                                            border: "1.5px solid #667eea",
-                                                            padding: "0.625rem 1rem",
-                                                            borderRadius: "8px",
-                                                            fontSize: "0.85rem",
-                                                            fontWeight: "600",
-                                                            cursor: "pointer",
-                                                            transition: "all 0.2s",
-                                                            fontFamily: "var(--font-geist-sans)"
-                                                        }}
+                                                        style={buttonStyles.primary}
                                                         onMouseOver={(e) => {
-                                                            e.currentTarget.style.backgroundColor = "#667eea";
-                                                            e.currentTarget.style.color = "white";
+                                                            e.currentTarget.style.backgroundColor = buttonStyles.primaryHover.backgroundColor;
+                                                            e.currentTarget.style.color = buttonStyles.primaryHover.color;
                                                         }}
                                                         onMouseOut={(e) => {
-                                                            e.currentTarget.style.backgroundColor = "transparent";
-                                                            e.currentTarget.style.color = "#667eea";
+                                                            e.currentTarget.style.backgroundColor = buttonStyles.primary.backgroundColor;
+                                                            e.currentTarget.style.color = buttonStyles.primary.color;
                                                         }}
                                                     >
                                                         Edit
@@ -303,25 +281,14 @@ function InstructorAssignments() {
                     }}>
                         <Link to="/instructor/assignments/create">
                             <button
-                                style={{
-                                    backgroundColor: "white",
-                                    color: "#374151",
-                                    border: "2px solid #374151",
-                                    padding: "0.75rem 1.5rem",
-                                    borderRadius: "12px",
-                                    fontSize: "0.875rem",
-                                    fontWeight: "600",
-                                    cursor: "pointer",
-                                    transition: "all 0.2s ease",
-                                    fontFamily: "var(--font-geist-sans)"
-                                }}
+                                style={buttonStyles.green}
                                 onMouseOver={(e) => {
-                                    e.currentTarget.style.backgroundColor = "#374151";
-                                    e.currentTarget.style.color = "white";
+                                    e.currentTarget.style.backgroundColor = buttonStyles.greenHover.backgroundColor;
+                                    e.currentTarget.style.color = buttonStyles.greenHover.color;
                                 }}
                                 onMouseOut={(e) => {
-                                    e.currentTarget.style.backgroundColor = "white";
-                                    e.currentTarget.style.color = "#374151";
+                                    e.currentTarget.style.backgroundColor = buttonStyles.green.backgroundColor;
+                                    e.currentTarget.style.color = buttonStyles.green.color;
                                 }}
                             >
                                 Create Assignment

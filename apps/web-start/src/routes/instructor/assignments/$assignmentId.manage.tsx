@@ -5,6 +5,7 @@ import { AssignmentUpdateIn } from '@repo/api/assignments';
 import Navbar from '../../../components/Navbar';
 import PageHeader from '../../../components/PageHeader';
 import { backendFetcher } from '../../../integrations/fetcher';
+import { buttonStyles } from '../../../styles/buttonStyles';
 
 export const Route = createFileRoute(
   '/instructor/assignments/$assignmentId/manage',
@@ -24,119 +25,117 @@ interface Assignment {
 }
 
 interface DeleteModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    assignmentTitle: string;
-    onConfirm: () => void;
-    isDeleting: boolean;
+  isOpen: boolean;
+  onClose: () => void;
+  assignmentTitle: string;
+  onConfirm: () => void;
+  isDeleting: boolean;
 }
 
 function DeleteConfirmModal({ isOpen, onClose, assignmentTitle, onConfirm, isDeleting }: DeleteModalProps) {
-    if (!isOpen) return null;
+  if (!isOpen) return null;
 
-    return (
-        <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000,
+    }}>
+      <div style={{
+        backgroundColor: 'white',
+        borderRadius: '12px',
+        padding: '2rem',
+        maxWidth: '500px',
+        width: '90%',
+      }}>
+        <h2 style={{
+          margin: 0,
+          marginBottom: '1rem',
+          color: '#dc2626',
+          fontSize: '1.5rem',
+          fontWeight: '600'
         }}>
-            <div style={{
-                backgroundColor: 'white',
-                borderRadius: '12px',
-                padding: '2rem',
-                maxWidth: '500px',
-                width: '90%',
-            }}>
-                <h2 style={{ 
-                    margin: 0, 
-                    marginBottom: '1rem', 
-                    color: '#dc2626',
-                    fontSize: '1.5rem',
-                    fontWeight: '600'
-                }}>
-                    Delete Assignment?
-                </h2>
-                
-                <p style={{ 
-                    margin: 0, 
-                    marginBottom: '0.5rem',
-                    color: '#374151',
-                    fontSize: '0.875rem'
-                }}>
-                    Are you sure you want to delete this assignment?
-                </p>
+          Delete Assignment?
+        </h2>
 
-                <div style={{
-                    backgroundColor: '#fee',
-                    padding: '1rem',
-                    borderRadius: '8px',
-                    marginBottom: '1.5rem',
-                    border: '1px solid #fecaca'
-                }}>
-                    <p style={{ 
-                        margin: 0, 
-                        fontWeight: '600',
-                        color: '#991b1b',
-                        fontSize: '0.875rem'
-                    }}>
-                        {assignmentTitle}
-                    </p>
-                    <p style={{ 
-                        margin: 0, 
-                        marginTop: '0.25rem',
-                        color: '#dc2626',
-                        fontSize: '0.75rem'
-                    }}>
-                        This action cannot be undone.
-                    </p>
-                </div>
+        <p style={{
+          margin: 0,
+          marginBottom: '0.5rem',
+          color: '#374151',
+          fontSize: '0.875rem'
+        }}>
+          Are you sure you want to delete this assignment?
+        </p>
 
-                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        disabled={isDeleting}
-                        style={{
-                            padding: '0.75rem 1.5rem',
-                            border: '1px solid #d1d5db',
-                            borderRadius: '8px',
-                            backgroundColor: 'white',
-                            color: '#374151',
-                            cursor: isDeleting ? 'not-allowed' : 'pointer',
-                            fontSize: '0.875rem',
-                            fontWeight: '600',
-                        }}
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="button"
-                        onClick={onConfirm}
-                        disabled={isDeleting}
-                        style={{
-                            padding: '0.75rem 1.5rem',
-                            border: 'none',
-                            borderRadius: '8px',
-                            backgroundColor: isDeleting ? '#9ca3af' : '#dc2626',
-                            color: 'white',
-                            cursor: isDeleting ? 'not-allowed' : 'pointer',
-                            fontSize: '0.875rem',
-                            fontWeight: '600',
-                        }}
-                    >
-                        {isDeleting ? 'Deleting...' : 'Yes, Delete'}
-                    </button>
-                </div>
-            </div>
+        <div style={{
+          backgroundColor: '#fee',
+          padding: '1rem',
+          borderRadius: '8px',
+          marginBottom: '1.5rem',
+          border: '1px solid #fecaca'
+        }}>
+          <p style={{
+            margin: 0,
+            fontWeight: '600',
+            color: '#991b1b',
+            fontSize: '0.875rem'
+          }}>
+            {assignmentTitle}
+          </p>
+          <p style={{
+            margin: 0,
+            marginTop: '0.25rem',
+            color: '#dc2626',
+            fontSize: '0.75rem'
+          }}>
+            This action cannot be undone.
+          </p>
         </div>
-    );
+
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={isDeleting}
+            style={buttonStyles.secondary}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = buttonStyles.secondaryHover.backgroundColor;
+              e.currentTarget.style.color = buttonStyles.secondaryHover.color;
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = buttonStyles.secondary.backgroundColor;
+              e.currentTarget.style.color = buttonStyles.secondary.color;
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            disabled={isDeleting}
+            style={buttonStyles.danger}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = buttonStyles.dangerHover.backgroundColor;
+              e.currentTarget.style.color = buttonStyles.dangerHover.color;
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = buttonStyles.danger.backgroundColor;
+              e.currentTarget.style.color = buttonStyles.danger.color;
+            }}
+          >
+            {isDeleting ? 'Deleting...' : 'Yes, Delete'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function ManageAssignment() {
@@ -479,25 +478,14 @@ function ManageAssignment() {
                 <Link to="/instructor/assignments">
                   {<button
                     type="button"
-                    style={{
-                      backgroundColor: "transparent",
-                      color: "#374151",
-                      border: "1.5px solid #374151",
-                      padding: "0.625rem 1rem",
-                      borderRadius: "8px",
-                      fontSize: "0.85rem",
-                      fontWeight: "600",
-                      cursor: "pointer",
-                      transition: "all 0.2s",
-                      fontFamily: "var(--font-geist-sans)"
-                    }}
+                    style={buttonStyles.secondary}
                     onMouseOver={(e) => {
-                      e.currentTarget.style.backgroundColor = "#374151";
-                      e.currentTarget.style.color = "white";
+                      e.currentTarget.style.backgroundColor = buttonStyles.secondaryHover.backgroundColor;
+                      e.currentTarget.style.color = buttonStyles.secondaryHover.color;
                     }}
                     onMouseOut={(e) => {
-                      e.currentTarget.style.backgroundColor = "white";
-                      e.currentTarget.style.color = "#374151";
+                      e.currentTarget.style.backgroundColor = buttonStyles.secondary.backgroundColor;
+                      e.currentTarget.style.color = buttonStyles.secondary.color;
                     }}
                   >
                     Cancel
@@ -506,25 +494,14 @@ function ManageAssignment() {
                 <button
                   onClick={handleDeleteClick}
                   type="button"
-                  style={{
-                    backgroundColor: "transparent",
-                    color: "#dc2626",
-                    border: "1.5px solid #dc2626",
-                    padding: "0.625rem 1rem",
-                    borderRadius: "8px",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
-                    cursor: "pointer",
-                    transition: "all 0.2s",
-                    fontFamily: "var(--font-geist-sans)"
-                  }}
+                  style={buttonStyles.danger}
                   onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = "#dc2626";
-                    e.currentTarget.style.color = "white";
+                    e.currentTarget.style.backgroundColor = buttonStyles.dangerHover.backgroundColor;
+                    e.currentTarget.style.color = buttonStyles.dangerHover.color;
                   }}
                   onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = "white";
-                    e.currentTarget.style.color = "#dc2626";
+                    e.currentTarget.style.backgroundColor = buttonStyles.danger.backgroundColor;
+                    e.currentTarget.style.color = buttonStyles.danger.color;
                   }}
                 >
                   Delete Assignment
@@ -532,25 +509,14 @@ function ManageAssignment() {
                 <button
                   type="submit"
                   disabled={updateMutation.isPending}
-                  style={{
-                    backgroundColor: updateMutation.isPending ? "#transparent" : "#667eea",
-                    color: "white",
-                    border: "1.5px solid #667eea",
-                    padding: "0.75rem 1.5rem",
-                    borderRadius: "8px",
-                    cursor: updateMutation.isPending ? "not-allowed" : "pointer",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
-                    transition: "all 0.2s",
-                    fontFamily: "var(--font-geist-sans)"
-                  }}
-                    onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = "#667eea";
-                    e.currentTarget.style.color = "white";
+                  style={buttonStyles.primary}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = buttonStyles.primaryHover.backgroundColor;
+                    e.currentTarget.style.color = buttonStyles.primaryHover.color;
                   }}
                   onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = "white";
-                    e.currentTarget.style.color = "#667eea";
+                    e.currentTarget.style.backgroundColor = buttonStyles.primary.backgroundColor;
+                    e.currentTarget.style.color = buttonStyles.primary.color;
                   }}
                 >
                   {updateMutation.isPending ? 'Updating...' : 'Update Assignment'}
@@ -560,7 +526,7 @@ function ManageAssignment() {
           </div>
         </div>
       </div>
-      <DeleteConfirmModal 
+      <DeleteConfirmModal
         isOpen={DeleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         assignmentTitle={assignment?.title || ''}
