@@ -23,7 +23,7 @@ model Users {
 }
 
 model Authentication {
-  id         String   @id @default(cuid())
+  id         String   @id @default(uuid())
   userId     String
   provider   String
   providerId String
