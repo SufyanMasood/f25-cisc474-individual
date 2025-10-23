@@ -1,9 +1,9 @@
 import { prisma } from "./client";
 
-import type { Users, UserProfiles, Courses, Enrollments, Assignments, Submissions, Grades, Announcements } from '../generated/client';
+import type { Users, UserProfiles, Courses, Enrollments, Assignments, Submissions, Grades, Announcements, Authentication } from '../generated/client';
 
 // Import all test data from json file. Test data was generated mostly by LLMs but revisions and modifications were made.
-const { users, userProfiles, courses, enrollments, assignments, submissions, grades, announcements } = require('./testData.json');
+const { users, userProfiles, courses, enrollments, assignments, submissions, grades, announcements, authentications } = require('./testData.json');
 
 (async () => {
   try {
@@ -30,6 +30,29 @@ const { users, userProfiles, courses, enrollments, assignments, submissions, gra
         }),
       ),
     );
+
+    console.log("Seeding authentications...");
+    if (authentications && authentications.length > 0) {
+      await prisma.$transaction(
+        authentications.map((auth: Authentication) =>
+          prisma.authentication.upsert({
+            where: {
+              provider_providerId: {
+                provider: auth.provider!,
+                providerId: auth.providerId!,
+              },
+            },
+            update: {},
+            create: {
+              id: auth.id!,
+              userId: auth.userId!,
+              provider: auth.provider!,
+              providerId: auth.providerId!,
+            },
+          })
+        )
+      );
+    }
 
     console.log("Seeding profiles...");
     await prisma.$transaction(

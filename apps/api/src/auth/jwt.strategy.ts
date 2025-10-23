@@ -61,7 +61,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     // 2) If missing, create User + Authentication (using whatever claims we have)
     if (!auth) {
-      const user = await this.prisma.user.create({
+      const user = await this.prisma.users.create({
         data: {
           authentications: {
             create: {
@@ -74,8 +74,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       auth = { ...auth, user } as any;
     } else {
       // 3) Update user profile fields opportunistically (don’t overwrite with nulls)
-      await this.prisma.user.update({
-        where: { id: auth.userId },
+      await this.prisma.users.update({
+        where: { userId: auth.userId },
         data: {},
       });
     }
