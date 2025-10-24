@@ -13,9 +13,10 @@ import { CoursesModule } from './courses/courses.module';
 import { EnrollmentsModule } from './enrollments/enrollments.module';
 import { GradesModule } from './grades/grades.module';
 import { SubmissionsModule } from './submissions/submissions.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [LinksModule, UsersModule, UserProfilesModule, AnnouncementsModule, AssignmentsModule, CoursesModule, EnrollmentsModule, GradesModule, SubmissionsModule],
+  imports: [LinksModule, UsersModule, UserProfilesModule, AnnouncementsModule, AssignmentsModule, CoursesModule, EnrollmentsModule, GradesModule, SubmissionsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

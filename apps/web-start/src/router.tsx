@@ -1,6 +1,7 @@
 import { createRouter } from '@tanstack/react-router';
 import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query';
 import * as TanstackQuery from './integrations/root-provider';
+import { Auth0Provider } from '@auth0/auth0-react';
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen';
@@ -9,15 +10,30 @@ import { routeTree } from './routeTree.gen';
 export const getRouter = () => {
   const rqContext = TanstackQuery.getContext();
 
+  // Create the redirect URI based on the current origin, which may be undefined during SSR (copied from professor)
+  const redirect_uri =
+    typeof window !== 'undefined'
+      ? window.location.origin + '/home'
+      : undefined;
+
   const router = createRouter({
     routeTree,
     context: { ...rqContext },
     defaultPreload: 'intent',
     Wrap: (props: { children: React.ReactNode }) => {
       return (
-        <TanstackQuery.Provider {...rqContext}>
-          {props.children}
-        </TanstackQuery.Provider>
+        <Auth0Provider
+          domain={import.meta.env.VITE_AUTH0_DOMAIN}
+          clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
+          authorizationParams={{
+            redirect_uri: redirect_uri,
+            audience: import.meta.env.VITE_AUTH0_AUDIENCE
+          }}
+        >
+          <TanstackQuery.Provider {...rqContext}>
+            {props.children}
+          </TanstackQuery.Provider>
+        </Auth0Provider>
       );
     },
   });

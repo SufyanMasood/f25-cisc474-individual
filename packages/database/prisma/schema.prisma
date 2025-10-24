@@ -13,23 +13,36 @@ generator client {
 }
 
 model Users {
-  userId        String     @id @default(cuid())
-  firstName     String
-  lastName      String
-  email         String     @unique
+  userId        String     @id @default(uuid())
+  firstName     String?
+  lastName      String?
+  email         String?    @unique
   emailVerified DateTime?
   userRole      UserRole   @default(STUDENT)
+  authentications Authentication[]
 }
 
+model Authentication {
+  id         String   @id @default(uuid())
+  userId     String
+  provider   String
+  providerId String
+  user Users @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  @@unique([provider, providerId])
+  @@index([provider, providerId])
+  @@map("authentications")
+}
+
+
 model UserProfiles {
-  userProfileId String   @id @default(cuid())
+  userProfileId String   @id @default(uuid())
   userId        String   @unique
   avatarUrl     String?
   biography     String?
 }
 
 model Courses {
-  courseId     String   @id @default(cuid())
+  courseId     String   @id @default(uuid())
   courseName   String
   courseCode   String   @unique
   description  String?
@@ -37,7 +50,7 @@ model Courses {
 }
 
 model Enrollments {
-  enrollmentId String    @id @default(cuid())
+  enrollmentId String    @id @default(uuid())
   studentId    String
   courseId     String
   enrolledDate DateTime  @default(now())
@@ -47,7 +60,7 @@ model Enrollments {
 }
 
 model Assignments {
-  assignmentId    String    @id @default(cuid())
+  assignmentId    String    @id @default(uuid())
   title           String
   description     String?
   assignmentType  String
@@ -60,7 +73,7 @@ model Assignments {
 }
 
 model Submissions {
-  submissionId   String   @id @default(cuid())
+  submissionId   String   @id @default(uuid())
   assignmentId   String
   studentId      String
   submissionText String
@@ -71,7 +84,7 @@ model Submissions {
 }
 
 model Grades {
-  gradeId      String    @id @default(cuid())
+  gradeId      String    @id @default(uuid())
   submissionId String    @unique
   graderId     String
   pointsEarned Int
@@ -81,7 +94,7 @@ model Grades {
 }
 
 model Announcements {
-  announcementId String    @id @default(cuid())
+  announcementId String    @id @default(uuid())
   courseId       String
   subject        String
   message        String

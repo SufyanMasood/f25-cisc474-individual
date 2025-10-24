@@ -1,13 +1,12 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import { AssignmentUpdateIn } from '@repo/api/assignments'
 import Navbar from '../../../components/Navbar'
 import PageHeader from '../../../components/PageHeader'
-import { backendFetcher } from '../../../integrations/fetcher'
 import { buttonStyles } from '../../../styles/buttonStyles'
 import { layoutStyles } from '../../../styles/layoutStyles'
 import { formStyles } from '../../../styles/formStyles'
+import { useApiQuery, useApiMutation } from '../../../integrations/api'
 
 export const Route = createFileRoute(
   '/instructor/assignments/$assignmentId/manage',
@@ -127,15 +126,14 @@ function DeleteConfirmModal({ isOpen, onClose, onConfirm, isDeleting }: DeleteMo
 function ManageAssignment() {
   const { assignmentId } = Route.useParams();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const [DeleteModalOpen, setDeleteModalOpen] = useState(false);
 
   // Fetch the existing assignment
-  const { data: assignment, isLoading, error } = useQuery({
-    queryKey: ['assignment', assignmentId],
-    queryFn: backendFetcher<Assignment>(`/assignments/${assignmentId}`),
-  });
+  const { data: assignment, isLoading, error } = useApiQuery<Assignment>(
+    ['assignment', assignmentId],
+    `/assignments/${assignmentId}`
+  );
 
   const [formData, setFormData] = useState<AssignmentUpdateIn>({
     title: '',
@@ -162,48 +160,38 @@ function ManageAssignment() {
     }
   }, [assignment]);
 
-  const updateMutation = useMutation({
-    mutationFn: async (data: AssignmentUpdateIn) => {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/assignments/${assignmentId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) throw new Error('Failed to update assignment');
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['assignments'] });
-      queryClient.invalidateQueries({ queryKey: ['assignment', assignmentId] });
-      navigate({ to: '/instructor/assignments' });
-    },
+  const updateMutation = useApiMutation<AssignmentUpdateIn>({
+    endpoint: () => ({ path: `/assignments/${assignmentId}`, method: 'PATCH' }),
+    invalidateKeys: [['assignments'], ['assignment', assignmentId]],
   });
+  // Redirect on success
+  if (updateMutation.isSuccess) {
+    navigate({ to: '/instructor/assignments' });
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     updateMutation.mutate(formData);
   };
 
-  const deleteMutation = useMutation({
-    mutationFn: async () => {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/assignments/${assignmentId}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) throw new Error('Failed to delete assignment');
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['assignments'] });
-      window.location.href = '/instructor/assignments';
-    },
+  const deleteMutation = useApiMutation({
+    endpoint: () => ({ path: `/assignments/${assignmentId}`, method: 'DELETE' }),
+    invalidateKeys: [['assignments']],
   });
+
+  // Redirect after delete
+  useEffect(() => {
+  if (deleteMutation.isSuccess) {
+    navigate({ to: '/instructor/assignments' });
+  }
+}, [deleteMutation.isSuccess, navigate]);
 
   const handleDeleteClick = () => {
     setDeleteModalOpen(true);
   };
 
   const handleDeleteConfirm = () => {
-    deleteMutation.mutate();
+    deleteMutation.mutate({});
   };
 
   if (isLoading) {
@@ -223,7 +211,7 @@ function ManageAssignment() {
   }
 
   return (
-     <div style={layoutStyles.pageBackground}>
+    <div style={layoutStyles.pageBackground}>
       <div style={layoutStyles.pageContainer}>
         <Navbar userType="instructor" activeItem="assignments" />
 

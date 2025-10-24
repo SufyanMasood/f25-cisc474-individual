@@ -1,34 +1,20 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import React, { useState } from "react";
+import { useAuth0 } from '@auth0/auth0-react'
 
 export const Route = createFileRoute('/login/')({
   component: LoginPage
 })
 
 function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [userType, setUserType] = useState<"student" | "instructor" | "admin">("student");
-    const navigate = useNavigate();
+    const { loginWithRedirect } = useAuth0();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Login attempt:", { email, password, userType });
-        // Placeholder logic until OAuth is implemented
-
-        // Redirect based on user type. Instructor and admin will be redirected to their
-        // dashboard pages once those are implemented.
-        switch (userType) {
-            case "student":
-                navigate({ to: "/student/dashboard" });
-                break;
-            case "instructor":
-                navigate({ to: "/instructor/assignments" });
-                break;
-            case "admin":
-                navigate({ to: "/admin/courses" });
-                break;
-        }
+        // Save userType to localStorage so home.tsx can use it
+        localStorage.setItem('userType', userType);
+        loginWithRedirect({ appState: { userType } });
     };
 
     return (
@@ -145,86 +131,9 @@ function LoginPage() {
                         </select>
                     </div>
 
-                    <div>
-                        <label 
-                            htmlFor="email" 
-                            style={{ 
-                                display: "block", 
-                                fontSize: "0.875rem", 
-                                fontWeight: "600", 
-                                color: "#374151", 
-                                marginBottom: "0.5rem",
-                                fontFamily: "var(--font-geist-sans)"
-                            }}
-                        >
-                            Email Address
-                        </label>
-                        <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            autoComplete="email"
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter your email"
-                            style={{
-                                width: "100%",
-                                padding: "0.75rem 1rem",
-                                border: "2px solid #e5e7eb",
-                                borderRadius: "12px",
-                                fontSize: "0.875rem",
-                                outline: "none",
-                                transition: "border-color 0.2s",
-                                backgroundColor: "white",
-                                fontFamily: "var(--font-geist-sans)"
-                            }}
-                            onFocus={(e) => e.target.style.borderColor = "#667eea"}
-                            onBlur={(e) => e.target.style.borderColor = "#e5e7eb"}
-                        />
-                    </div>
-
-                    <div>
-                        <label 
-                            htmlFor="password" 
-                            style={{ 
-                                display: "block", 
-                                fontSize: "0.875rem", 
-                                fontWeight: "600", 
-                                color: "#374151", 
-                                marginBottom: "0.5rem",
-                                fontFamily: "var(--font-geist-sans)"
-                            }}
-                        >
-                            Password
-                        </label>
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            autoComplete="current-password"
-                            required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter your password"
-                            style={{
-                                width: "100%",
-                                padding: "0.75rem 1rem",
-                                border: "2px solid #e5e7eb",
-                                borderRadius: "12px",
-                                fontSize: "0.875rem",
-                                outline: "none",
-                                transition: "border-color 0.2s",
-                                backgroundColor: "white",
-                                fontFamily: "var(--font-geist-sans)"
-                            }}
-                            onFocus={(e) => e.target.style.borderColor = "#667eea"}
-                            onBlur={(e) => e.target.style.borderColor = "#e5e7eb"}
-                        />
-                    </div>
-
                     <button 
                         type="submit"
+                        onClick={() => loginWithRedirect({ authorizationParams: { scope: 'read:assignments', prompt: 'consent' }, })}
                         style={{
                             width: "100%",
                             background: "linear-gradient(135deg, #667eea, #764ba2)",
@@ -248,7 +157,7 @@ function LoginPage() {
                             e.currentTarget.style.boxShadow = "0 4px 15px rgba(102, 126, 234, 0.4)";
                         }}
                     >
-                        Sign In
+                        Log In
                     </button>
                 </form>
             </div>
