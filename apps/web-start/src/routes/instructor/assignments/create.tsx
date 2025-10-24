@@ -1,5 +1,4 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { AssignmentCreateIn } from '@repo/api/assignments'
 import Navbar from '../../../components/Navbar'
@@ -7,6 +6,7 @@ import PageHeader from '../../../components/PageHeader'
 import { buttonStyles } from '../../../styles/buttonStyles'
 import { layoutStyles } from '../../../styles/layoutStyles'
 import { formStyles } from '../../../styles/formStyles'
+import { useApiMutation } from '../../../integrations/api';
 
 export const Route = createFileRoute('/instructor/assignments/create')({
   component: CreateAssignment,
@@ -14,7 +14,6 @@ export const Route = createFileRoute('/instructor/assignments/create')({
 
 function CreateAssignment() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const [formData, setFormData] = useState<AssignmentCreateIn>({
     title: '',
@@ -26,21 +25,15 @@ function CreateAssignment() {
     courseId: '',
   });
 
-  const createMutation = useMutation({
-    mutationFn: async (data: AssignmentCreateIn) => {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/assignments`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) throw new Error('Failed to create assignment');
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['assignments'] });
-      navigate({ to: '/instructor/assignments' });
-    },
+  const createMutation = useApiMutation<AssignmentCreateIn>({
+    path: '/assignments',
+    method: 'POST',
+    invalidateKeys: [['assignments']],
   });
+  // Redirect on success
+if (createMutation.isSuccess) {
+  navigate({ to: '/instructor/assignments' });
+}
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,11 +1,10 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useQuery } from '@tanstack/react-query'
 import { Suspense } from 'react'
 import Navbar from '../../../components/Navbar'
 import PageHeader from '../../../components/PageHeader'
-import { backendFetcher } from '../../../integrations/fetcher'
 import { buttonStyles } from '../../../styles/buttonStyles'
 import { layoutStyles } from '../../../styles/layoutStyles'
+import { useApiQuery } from '../../../integrations/api';
 
 export const Route = createFileRoute('/instructor/assignments/')({
     component: InstructorAssignments
@@ -31,15 +30,9 @@ interface Assignment {
 }
 
 function AssignmentsContent() {
-    const { data: courses = [], isLoading: coursesLoading } = useQuery({
-        queryKey: ['courses'],
-        queryFn: backendFetcher<Course[]>('/courses')
-    });
+    const { data: courses = [], isLoading: coursesLoading } = useApiQuery<Course[]>(['courses'], '/courses')
 
-    const { data: assignments = [], isLoading: assignmentsLoading, error } = useQuery({
-        queryKey: ['assignments'],
-        queryFn: backendFetcher<Assignment[]>('/assignments')
-    });
+    const { data: assignments = [], isLoading: assignmentsLoading, error } = useApiQuery<Assignment[]>(['assignments'], '/assignments');
 
     if (coursesLoading || assignmentsLoading) {
         return (

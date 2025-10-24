@@ -13,14 +13,14 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
-  }
-
   @Get('me')
   @UseGuards(AuthGuard('jwt'))
   getMe(@CurrentUser() user: JwtUser) {
     return this.usersService.findOne(user.userId);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.usersService.findOne(id);
   }
 }
