@@ -180,9 +180,12 @@ function ManageAssignment() {
   });
 
   // Redirect after delete
+  useEffect(() => {
   if (deleteMutation.isSuccess) {
-    window.location.href = '/instructor/assignments';
+    navigate({ to: '/instructor/assignments' });
   }
+}, [deleteMutation.isSuccess, navigate]);
+
   const handleDeleteClick = () => {
     setDeleteModalOpen(true);
   };
