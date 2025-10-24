@@ -12,6 +12,8 @@ type JwtPayload = {
   iss: string;
   aud: string | string[];
   scope?: string;
+  email?: string;
+  name?: string;
 };
 
 export interface JwtUser {
@@ -48,7 +50,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: JwtPayload): Promise<JwtUser> {
     // You can see the JWT here
-    // console.log('JWT payload', payload);
+    console.log('JWT payload', payload);
 
     const { sub } = payload;
     const { provider, providerId } = splitSub(sub);
@@ -61,25 +63,31 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     // 2) If missing, create User + Authentication (using whatever claims we have)
     if (!auth) {
-      const user = await this.prisma.users.create({
-        data: {
-          authentications: {
-            create: {
-              provider,
-              providerId,
+
+    const names = (payload['name'] || 'User').split(' ');
+    const firstName = names[0] || 'User';
+    const lastName = names.slice(1).join(' ') || 'Account';
+    const email = payload['email'] || `${providerId}@auth0.user`;
+
+    const newUser = await this.prisma.users.create({
+      data: {
+        firstName,
+        lastName,
+        email,
+        emailVerified: new Date(),
+        authentications: {
+          create: {
+            provider,
+            providerId,
             },
           },
         },
+      include: { authentications: true },
       });
-      auth = { ...auth, user } as any;
-    } else {
-      // 3) Update user profile fields opportunistically (don’t overwrite with nulls)
-      await this.prisma.users.update({
-        where: { userId: auth.userId },
-        data: {},
-      });
-    }
 
+      auth = { ...newUser.authentications[0], user: newUser };
+    }
+    
     return {
       userId: auth.userId,
       provider,
