@@ -27,6 +27,7 @@ export const getRouter = () => {
           clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
           authorizationParams={{
             redirect_uri: redirect_uri,
+            audience: import.meta.env.VITE_AUTH0_AUDIENCE
           }}
         >
           <TanstackQuery.Provider {...rqContext}>

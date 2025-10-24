@@ -12,6 +12,8 @@ function LoginPage() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        // Save userType to localStorage so home.tsx can use it
+        localStorage.setItem('userType', userType);
         loginWithRedirect({ appState: { userType } });
     };
 
