@@ -131,6 +131,7 @@ function LoginPage() {
 
                     <button 
                         type="submit"
+                        onClick={() => loginWithRedirect({ authorizationParams: { scope: 'read:assignments', prompt: 'consent' }, })}
                         style={{
                             width: "100%",
                             background: "linear-gradient(135deg, #667eea, #764ba2)",
